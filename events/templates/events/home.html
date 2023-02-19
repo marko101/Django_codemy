@@ -1,0 +1,19 @@
+{% extends 'events/base.html' %}
+
+    {% block content %}
+<center>
+
+    <h1>zdravo {{ ime }} Zakazani za {{ mesec }} {{ godina }}</h1>
+    
+    <br/>
+    Trenutno vreme: {{ vreme }}
+    
+    
+    {{ cal|safe }}
+    <br/>
+    Trenutna godina je {{ ova_godina }}
+    </center>
+
+
+
+    {% endblock %}
