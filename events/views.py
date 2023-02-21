@@ -2,9 +2,35 @@ from django.shortcuts import render
 import calendar
 from calendar import LocaleHTMLCalendar
 from datetime import datetime
-from .models import Evant
+from django.http import HttpResponseRedirect
+from .models import Evant, Venue
+from .forms import VenueForm
 
 # Create your views here.
+def show_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    return render(request, 'events/prikaz_dogadjaja.html', {'venue':venue})
+
+
+
+def list_venues(request):
+    venue_list = Venue.objects.all()
+    return render(request, 'events/mesto_dogadjaja.html', {'venue_list':venue_list})
+
+
+def add_venue(request):
+    snimljeno = False
+    if request.method == "POST":
+        form = VenueForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_venue?snimljeno=True')
+    else:
+        form= VenueForm
+        if 'snimljeno' in request.GET:
+            snimljeno = True
+    return render(request, 'events/add_venue.html', {'form':form, 'snimljeno':snimljeno}) # {{ form.as_p }}
+
 
 def svi_dogadjaji(request):
     event_list = Evant.objects.all()
