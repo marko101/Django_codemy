@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import calendar
 from calendar import LocaleHTMLCalendar
 from datetime import datetime
@@ -7,15 +7,32 @@ from .models import Evant, Venue
 from .forms import VenueForm
 
 # Create your views here.
+
+def update_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    form = VenueForm(request.POST or None, instance=venue)
+    if form.is_valid():
+        form.save()
+        return redirect('list-venues')
+    return render(request, 'events/update_venue.html', {'venue':venue, 'form':form})
+
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    return render(request, 'events/prikaz_dogadjaja.html', {'venue':venue})
+    return render(request, 'events/show_venue.html', {'venue':venue})
 
+def search_venues(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        venues = Venue.objects.filter(ime__contains=searched)
+        return render(request, 'events/search_venues.html',{'searched':searched, 'venues':venues})
+    else:
+        return render(request, 'events/search_venues.html',
+    {})
 
 
 def list_venues(request):
     venue_list = Venue.objects.all()
-    return render(request, 'events/mesto_dogadjaja.html', {'venue_list':venue_list})
+    return render(request, 'events/venue.html', {'venue_list':venue_list})
 
 
 def add_venue(request):

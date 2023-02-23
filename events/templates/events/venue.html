@@ -1,0 +1,22 @@
+{% extends 'events/base.html' %}
+
+    {% block content %}
+<center>
+
+    <h1>Mesto dogadjaja</h1>
+<br/>
+<table class="table table-striped">
+    {% for venue in venue_list %}
+    <tr>
+        <td>
+            <a href="{% url 'show-venue' venue.id %}" class="link-secondary">{{ venue }}</a> <!-- {{ venue.web }} -->
+        </td>
+        <td align="right">
+            <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary btn-sm">Ažuriraj</a>
+        </td>
+    </tr>
+
+    {% endfor %}
+</table>
+  
+    {% endblock %}
