@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +15,7 @@ SECRET_KEY = 'django-insecure-i+ih+fdfjqai0p28o5i(n6-%b9d8uaq4+23pbmvvgn8v4vez#o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -26,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'events',
+    'members',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myclub.wsgi.application'
+
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }
 
 
 # Database

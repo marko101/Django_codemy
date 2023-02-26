@@ -15,15 +15,29 @@
           <a class="nav-link" href="{% url 'list_events' %}">Događaji</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'add-event' %}">Dodaj događaj</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'add-venue' %}">Dodaj Mesto Događaja</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'list-venues' %}">Mesta događaja...</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'venue_text' %}">Snimi txt</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'venue_csv' %}">Snimi csv</a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="{% url 'venue_pdf' %}">Snimi pdf</a>
+        </li>
+        </li><li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
 
 
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
           </li>
         </ul>
         <form class="d-flex" method=POST action="{% url 'search-venues' %}">

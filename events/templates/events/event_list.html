@@ -28,7 +28,11 @@
             </li>
             </ul>
       </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      
+    </div>
+    <div class="card-footer text-muted">
+      <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Ažuriraj</a>
+      <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Obriši</a>
     </div>
   </div>
 
