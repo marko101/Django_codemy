@@ -11,10 +11,12 @@
         <td>
             <a href="{% url 'show-venue' venue.id %}" class="link-secondary">{{ venue }}</a> <!-- {{ venue.web }} -->
         </td>
+        {% if user.is_authenticated %}
         <td align="right">
             <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary btn-sm">Ažuriraj</a>
             <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Obriši</a>
         </td>
+        {% endif %}
     </tr>
 
     {% endfor %}

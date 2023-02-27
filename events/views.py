@@ -4,7 +4,7 @@ from calendar import LocaleHTMLCalendar
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Evant, Venue
-from .forms import VenueForm, EventForm
+from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
 import csv
 from django.contrib import messages
@@ -128,7 +128,10 @@ def delete_event(request, event_id):
 
 def update_event(request, event_id):
     event = Evant.objects.get(pk=event_id)
-    form = EventForm(request.POST or None, instance=event)
+    if request.user.is_superuser:
+        form = EventFormAdmin(request.POST or None, instance=event)
+    else:
+        form = EventForm(request.POST or None, instance=event)
     if form.is_valid():
         form.save()
         return redirect('list_events')
@@ -140,13 +143,28 @@ def update_event(request, event_id):
 def add_event(request):
     snimljeno = False
     if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Događaj je snimljen')
-            return HttpResponseRedirect(reverse_lazy('list_events'))
+        if request.user.is_superuser:  #user.id == 2:
+            form = EventFormAdmin(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Admin, Događaj je snimljen')
+                return HttpResponseRedirect(reverse_lazy('list_events'))
+        else:
+            form = EventForm(request.POST)
+
+            if form.is_valid():
+                #form.save()
+                event = form.save(commit=False) #hoću da snimim ali ne još
+                event.menadzer = request.user #ovo je nakon kreiranja vlasnika u models.py
+                event.save()            
+                messages.success(request, 'Događaj je snimljen')
+                return HttpResponseRedirect(reverse_lazy('list_events'))
     else:
-        form= EventForm
+        #samo idem na stranicu ništa ne snimam
+        if request.user.is_superuser:
+            form= EventFormAdmin
+        else:
+            form= EventForm
         if 'snimljeno' in request.GET:
             snimljeno = True
     return render(request, 'events/add_event.html', {'form':form, 'snimljeno':snimljeno}) # {{ form.as_p }}
@@ -157,7 +175,10 @@ def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     form = VenueForm(request.POST or None, instance=venue)
     if form.is_valid():
-        form.save()
+        venue = form.save(commit=False) #hoću da snimim ali ne još
+        venue.vlasnik = request.user.id #ovo je nakon kreiranja vlasnika u models.py
+        venue.save()
+        #form.save()
         return redirect('list-venues')
     return render(request, 'events/update_venue.html', {'venue':venue, 'form':form})
 
@@ -179,7 +200,7 @@ def list_venues(request):
     venue_list = Venue.objects.all().order_by('ime')
 
     #ubaci stranice ako je lista dugačka
-    p = Paginator(Venue.objects.all(), 1)
+    p = Paginator(Venue.objects.all(), 6)
     page = request.GET.get('page')
     venues = p.get_page(page)
     nums = "a" * venues.paginator.num_pages
@@ -192,9 +213,13 @@ def add_venue(request):
     if request.method == "POST":
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
+            #form.save()
+            venue = form.save(commit=False) #hoću da snimim ali ne još
+            venue.vlasnik = request.user.id #ovo je nakon kreiranja vlasnika u models.py
+            venue.save()
             messages.success(request, 'Mesto događaja je snimljeno')
-            return HttpResponseRedirect('list-venues', request)
+            return HttpResponseRedirect('list_venues', request)
+            
     else:
         form= VenueForm
         if 'snimljeno' in request.GET:

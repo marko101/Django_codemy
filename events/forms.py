@@ -27,8 +27,8 @@ class VenueForm(ModelForm):
             'web':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Web adresa'},),
             'email':forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Mail adresa'}),
         }
-
-class EventForm(ModelForm):
+#admin superuser event form
+class EventFormAdmin(ModelForm):
     class Meta:
         model = Evant
         fields= ('ime', 'event_datum', 'venue', 'menadzer', 'polaznici', 'opis' )
@@ -48,6 +48,28 @@ class EventForm(ModelForm):
             'event_datum':forms.TextInput(attrs={'class':'form-control', 'placeholder':'datum događaja'}),
             'venue':forms.Select(attrs={'class':'form-select', 'placeholder':'Mesto događaja'}),
             'menadzer':forms.Select(attrs={'class':'form-select', 'placeholder':'Vodič'}),
+            'polaznici':forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Učenici'},),
+            'opis':forms.Textarea(attrs={'class':'form-control', 'placeholder':'opis'}),
+        }
+#korisnička forma događaja (user event form)
+class EventForm(ModelForm):
+    class Meta:
+        model = Evant
+        fields= ('ime', 'event_datum', 'venue', 'polaznici', 'opis' )
+#"__all__" # ili 
+
+        labels = {
+            'ime': '',
+            'event_datum':'',
+            'venue':'Mesto događaja',
+            'polaznici':'Učenici',
+            'opis':'',
+        }
+
+        widgets = {
+            'ime': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Ime događaja'}),
+            'event_datum':forms.TextInput(attrs={'class':'form-control', 'placeholder':'datum događaja'}),
+            'venue':forms.Select(attrs={'class':'form-select', 'placeholder':'Mesto događaja'}),
             'polaznici':forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Učenici'},),
             'opis':forms.Textarea(attrs={'class':'form-control', 'placeholder':'opis'}),
         }

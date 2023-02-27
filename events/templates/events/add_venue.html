@@ -2,9 +2,9 @@
 
     {% block content %}
 <center>
-
+  {% if user.is_authenticated %}
     <h1>Dodaj Mesto Događaja</h1>
-    <br/><br/>
+    <br/><br/>ID: {{ user.id }}
     {% if snimljeno %}
     
     <div {% include 'main/includes/messages.html' %}
@@ -25,7 +25,10 @@
     {% endif %}
  
     </center>
-
+    {% else %}
+    <h1>Moraš da budeš logovan!</h1>
+    <a href="{% url 'login' %}">Loguj se</a>
+{% endif %}
 
 
     {% endblock %}

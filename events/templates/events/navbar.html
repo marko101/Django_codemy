@@ -7,34 +7,62 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           
+          
+
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home' '2021' 'March' %}">Mart</a>
           </li>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_events' %}">Događaji</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Događaji
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'list_events' %}">Događaji</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'add-event' %}">Dodaj događaj</a></li>
+            {% endif %}
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add-event' %}">Dodaj događaj</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mesto događaja
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'list-venues' %}">Mesta događaja...</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'add-venue' %}">Dodaj Mesto Događaja</a></li>
+            {% endif %}
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add-venue' %}">Dodaj Mesto Događaja</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Snimi
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'venue_text' %}">Snimi txt</a></li>
+            <li><a class="dropdown-item" href="{% url 'venue_csv' %}">Snimi csv</a></li>
+            <li><a class="dropdown-item" href="{% url 'venue_pdf' %}">Snimi pdf</a></li>
+
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'list-venues' %}">Mesta događaja...</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'venue_text' %}">Snimi txt</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'venue_csv' %}">Snimi csv</a>
+
+        {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li> 
+        {% else %}
         </li><li class="nav-item">
-          <a class="nav-link" href="{% url 'venue_pdf' %}">Snimi pdf</a>
+          <a class="nav-link" href="{% url 'register_user' %}">Register</a>
         </li>
+
         </li><li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">Login</a>
         </li>
-
+        {% endif %}
 
           <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>

@@ -8,6 +8,8 @@ class Venue(models.Model):
     telefon = models.CharField("Kontakt Telefon", max_length=30, blank=True)
     web = models.URLField("Web Adresa", blank=True)
     email =models.EmailField("Email Adresa", blank=True)
+    vlasnik= models.IntegerField("Vlasnik događaja", blank=False, default=1)
+
 
     def __str__(self):
         return self.ime

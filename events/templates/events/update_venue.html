@@ -2,7 +2,7 @@
 
     {% block content %}
 
-
+    {% if user.is_authenticated %}
  <h1>Ažuriraj mesto dogadjaja</h1>
    <br/>
 <form action="" method=POST>
@@ -12,5 +12,8 @@
 
 <input type="submit" value="Ažuriraj" class="btn btn-secondary">
 
-
+{% else %}
+    <h1>Moraš da budeš logovan!</h1>
+    <a href="{% url 'login' %}">Loguj se</a>
+{% endif %}
     {% endblock %}

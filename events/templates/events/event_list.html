@@ -30,10 +30,16 @@
       </p>
       
     </div>
-    <div class="card-footer text-muted">
-      <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Ažuriraj</a>
-      <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Obriši</a>
-    </div>
+    {% if user.is_authenticated %}
+    {% if user == event.menadzer %}
+      <div class="card-footer text-muted">
+        
+        <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Ažuriraj</a>
+        <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Obriši</a>
+        
+      </div>
+    {% endif %}
+    {% endif %}
   </div>
 
 

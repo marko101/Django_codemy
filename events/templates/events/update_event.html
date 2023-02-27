@@ -1,16 +1,28 @@
 {% extends 'events/base.html' %}
 
-    {% block content %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if user == event.menadzer %}
+            <h1>Ažuriraj događaj</h1>
+ 
+            <form action="" method=POST>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br/>
+
+            <input type="submit" value="Ažuriraj" class="btn btn-secondary">
+        {% else %}
+            <h2>Nedostupno</h2>
+            <p> Samo menadžer događaja može menjati događaj!</p>
+            logovan korisnik: {{ user }}
+            <br/>
+            Vođa događaja: {{ event.menadzer }}
+        {% endif %}
 
 
- <h1>Ažuriraj događaj</h1>
-   <br/>
-<form action="" method=POST>
-    {% csrf_token %}
-{{ form.as_p }}
-<br/>
-
-<input type="submit" value="Ažuriraj" class="btn btn-secondary">
-
-
-    {% endblock %}
+    {% else %}
+        <h1>Moraš da budeš logovan!</h1>
+        <a href="{% url 'login' %}">Loguj se</a>
+    {% endif %}
+{% endblock %}
