@@ -4,6 +4,8 @@ from calendar import LocaleHTMLCalendar
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Evant, Venue
+#importuj korisnike iz modela iz Djanga da bi umesto vlasnik=broj video ime
+from django.contrib.auth.models import User
 from .forms import VenueForm, EventForm, EventFormAdmin
 from django.http import HttpResponse
 import csv
@@ -122,12 +124,18 @@ def delete_venue(request, venue_id):
 
 def delete_event(request, event_id):
     event=Evant.objects.get(pk=event_id)
-    event.delete()
-    return redirect('list_events')
+    if request.user == event.menadzer:
+        event.delete()
+        messages.success(request, ("Događaj je obrisan!"))
+        return redirect('list_events')
+    else:
+        messages.success(request, ("Nisi autorizovan da brišeš!"))
+        return redirect('list_events')
 
 
 def update_event(request, event_id):
     event = Evant.objects.get(pk=event_id)
+
     if request.user.is_superuser:
         form = EventFormAdmin(request.POST or None, instance=event)
     else:
@@ -184,7 +192,8 @@ def update_venue(request, venue_id):
 
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    return render(request, 'events/show_venue.html', {'venue':venue})
+    venue_vlasnik = User.objects.get(pk=venue.vlasnik)
+    return render(request, 'events/show_venue.html', {'venue':venue, "venue_vlasnik":venue_vlasnik})
 
 def search_venues(request):
     if request.method == "POST":
